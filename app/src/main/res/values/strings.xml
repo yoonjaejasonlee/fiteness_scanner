@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">OFS</string>
+    <string name="optimal_fitness_scanner">Optimal Fitness Scanner</string>
 </resources>
