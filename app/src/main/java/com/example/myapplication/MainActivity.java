@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     int humidity = 0; // Initial humidity measurement.
     int temperature = 0; // Initial temperature measurement.
 
+    boolean isHumiditySensorAvailable;
+
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,21 +71,26 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         // TYPE_STEP_DETECTOR : it resets to 0 once the app closes
         // TYPE_STEP_COUNTER : keeps track even if the app closes, it does not reset.
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        stepCountSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+
 
         // TYPE_AMBIENT_TEMPERATURE: constantly updates temperature.
         // TYPE_RELATIVE_HUMIDITY: constantly updates relative humidity levels.
-        humiditySensor = sensorManager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY);
-        temperatureSensor = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
-
-        if (stepCountSensor == null){
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) == null){
             Toast.makeText(this, "No Step Sensor", Toast.LENGTH_SHORT).show();
+        }else{
+            stepCountSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
         }
-        if (humiditySensor == null){
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY) == null){
             Toast.makeText(this, "No Humidity Sensor", Toast.LENGTH_SHORT).show();
+            isHumiditySensorAvailable = false;
+        }else{
+            humiditySensor = sensorManager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY);
+            isHumiditySensorAvailable = true;
         }
-        if (temperatureSensor == null){
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE) == null){
             Toast.makeText(this, "No Temperature Sensor", Toast.LENGTH_SHORT).show();
+        }else{
+            temperatureSensor = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
         }
 
         resetButton.setOnClickListener(new View.OnClickListener(){
@@ -93,9 +100,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 currentSteps = 0;
                 stepCountView.setText(String.valueOf(currentSteps));
 
-                // Humidity.
-                humidity = 0;
-                humidityView.setText(String.valueOf(humidity));
+//                // Humidity.
+//                humidity = 0;
+//                humidityView.setText(String.valueOf(humidity));
 
                 // Temperature
                 temperature = 0;
@@ -110,9 +117,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if(stepCountSensor != null){
             sensorManager.registerListener(this,stepCountSensor,SensorManager.SENSOR_DELAY_FASTEST);
         }
-        if (humiditySensor != null){
-            sensorManager.registerListener(this,humiditySensor,SensorManager.SENSOR_DELAY_FASTEST);
-        }
+//        if (humiditySensor != null){
+//            sensorManager.registerListener(this,humiditySensor,SensorManager.SENSOR_DELAY_FASTEST);
+//        }
         if (temperatureSensor != null){
             sensorManager.registerListener(this,temperatureSensor,SensorManager.SENSOR_DELAY_FASTEST);
         }
@@ -138,5 +145,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy){
 
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if (isHumiditySensorAvailable){
+            sensorManager.registerListener(this, humiditySensor, SensorManager.SENSOR_DELAY_NORMAL);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(isHumiditySensorAvailable){
+            sensorManager.unregisterListener(this);
+        }
     }
 }
