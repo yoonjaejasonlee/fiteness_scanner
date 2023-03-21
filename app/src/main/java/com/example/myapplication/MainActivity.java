@@ -62,6 +62,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             requestPermissions(new String[] {Manifest.permission.ACTIVITY_RECOGNITION},0);
         }
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+        }
+
         // TYPE_STEP_DETECTOR : it resets to 0 once the app closes
         // TYPE_STEP_COUNTER : keeps track even if the app closes, it does not reset.
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
