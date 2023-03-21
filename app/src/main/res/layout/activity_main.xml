@@ -34,6 +34,50 @@
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <TextView
+        android:id="@+id/humidityTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:text="@string/humiditys"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toStartOf="@+id/humidityView"
+        app:layout_constraintStart_toStartOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/stepCountTag" />
+
+    <TextView
+        android:id="@+id/temperatureTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:text="@string/temperature"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toStartOf="@+id/humidityView"
+        app:layout_constraintStart_toStartOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/humidityTag" />
+
+    <TextView
+        android:id="@+id/temperatureView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/_0s"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="@+id/title"
+        app:layout_constraintStart_toEndOf="@+id/temperatureTag"
+        app:layout_constraintTop_toTopOf="@+id/temperatureTag"
+        />
+
+    <TextView
+        android:id="@+id/humidityView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/_0s"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="@+id/title"
+        app:layout_constraintStart_toEndOf="@+id/humidityTag"
+        app:layout_constraintTop_toTopOf="@+id/humidityTag"
+        />
+
+    <TextView
         android:id="@+id/stepCountView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,6 +87,7 @@
         app:layout_constraintEnd_toEndOf="@+id/title"
         app:layout_constraintStart_toEndOf="@+id/stepCountTag"
         app:layout_constraintTop_toTopOf="@+id/stepCountTag" />
+
     <Button
         android:id="@+id/resetButton"
         android:layout_width="wrap_content"
