@@ -1,7 +1,3 @@
 <resources>
-    <string name="app_name">My Application</string>
-    <string name="optimal_fitness_scanner">Optimal Fitness Scanner</string>
-    <string name="steps">Steps :</string>
-    <string name="_0">0</string>
-    <string name="reset">Reset</string>
+    <string name="app_name">OFS</string>
 </resources>
