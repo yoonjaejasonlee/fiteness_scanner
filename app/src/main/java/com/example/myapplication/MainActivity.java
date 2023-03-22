@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     int temperature = 0; // Initial temperature measurement.
 
     boolean isHumiditySensorAvailable;
+    boolean isTemperatureSensorAvailale;
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
@@ -89,8 +90,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
         if (sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE) == null){
             Toast.makeText(this, "No Temperature Sensor", Toast.LENGTH_SHORT).show();
+            isTemperatureSensorAvailale = false;
         }else{
             temperatureSensor = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
+            isTemperatureSensorAvailale = true;
         }
 
         resetButton.setOnClickListener(new View.OnClickListener(){
@@ -105,8 +108,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 //                humidityView.setText(String.valueOf(humidity));
 
                 // Temperature
-                temperature = 0;
-                temperatureView.setText(String.valueOf(temperature));
+//                temperature = 0;
+//                temperatureView.setText(String.valueOf(temperature));
 
             }
         });
@@ -120,9 +123,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 //        if (humiditySensor != null){
 //            sensorManager.registerListener(this,humiditySensor,SensorManager.SENSOR_DELAY_FASTEST);
 //        }
-        if (temperatureSensor != null){
-            sensorManager.registerListener(this,temperatureSensor,SensorManager.SENSOR_DELAY_FASTEST);
-        }
+//        if (temperatureSensor != null){
+//            sensorManager.registerListener(this,temperatureSensor,SensorManager.SENSOR_DELAY_FASTEST);
+//        }
     }
 
     @Override
@@ -153,12 +156,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (isHumiditySensorAvailable){
             sensorManager.registerListener(this, humiditySensor, SensorManager.SENSOR_DELAY_NORMAL);
         }
+
+        if(isTemperatureSensorAvailale){
+            sensorManager.registerListener(this,temperatureSensor,SensorManager.SENSOR_DELAY_NORMAL);
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         if(isHumiditySensorAvailable){
+            sensorManager.unregisterListener(this);
+        }
+
+        if(isTemperatureSensorAvailale){
             sensorManager.unregisterListener(this);
         }
     }
