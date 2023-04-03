@@ -11,7 +11,7 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="40dp"
         android:layout_marginBottom="30dp"
         android:text="Optimal Fitness Scanner"
         android:textSize="30sp"
@@ -27,63 +27,12 @@
         android:id="@+id/stepCountTag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="68dp"
         android:text="Steps:"
         android:textSize="25sp"
         app:layout_constraintEnd_toStartOf="@+id/stepCountView"
         app:layout_constraintStart_toStartOf="@+id/title"
         app:layout_constraintTop_toBottomOf="@+id/title"
-        tools:ignore="HardcodedText"
-        />
-
-
-    <TextView
-        android:id="@+id/humidityTag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
-        android:text="Humidity"
-        android:textSize="25sp"
-        app:layout_constraintEnd_toStartOf="@+id/humidityView"
-        app:layout_constraintStart_toStartOf="@+id/title"
-        app:layout_constraintTop_toBottomOf="@+id/stepCountTag"
-        tools:ignore="HardcodedText"
-        />
-
-    <TextView
-        android:id="@+id/temperatureTag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
-        android:text="Temperature"
-        android:textSize="25sp"
-        app:layout_constraintEnd_toStartOf="@+id/humidityView"
-        app:layout_constraintStart_toStartOf="@+id/title"
-        app:layout_constraintTop_toBottomOf="@+id/humidityTag"
-        tools:ignore="HardcodedText"
-        />
-
-    <TextView
-        android:id="@+id/temperatureView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0"
-        android:textSize="25sp"
-        app:layout_constraintEnd_toEndOf="@+id/title"
-        app:layout_constraintStart_toEndOf="@+id/temperatureTag"
-        app:layout_constraintTop_toTopOf="@+id/temperatureTag"
-        tools:ignore="HardcodedText"
-        />
-
-    <TextView
-        android:id="@+id/humidityView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0"
-        android:textSize="25sp"
-        app:layout_constraintEnd_toEndOf="@+id/title"
-        app:layout_constraintStart_toEndOf="@+id/humidityTag"
-        app:layout_constraintTop_toTopOf="@+id/humidityTag"
         tools:ignore="HardcodedText"
         />
 
@@ -100,6 +49,33 @@
         tools:ignore="HardcodedText"
         />
 
+    <TextView
+        android:id="@+id/DistanceTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:text="Distance:"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toStartOf="@+id/stepCountView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/stepCountTag"
+        app:layout_constraintTop_toBottomOf="@+id/stepCountTag"
+        tools:ignore="HardcodedText"
+        />
+
+    <TextView
+        android:id="@+id/DistanceView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0.0"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/DistanceTag"
+        app:layout_constraintEnd_toEndOf="@+id/title"
+        app:layout_constraintStart_toEndOf="@+id/DistanceTag"
+        app:layout_constraintTop_toTopOf="@+id/DistanceTag"
+        tools:ignore="HardcodedText"
+        />
+
     <Button
         android:id="@+id/resetButton"
         android:layout_width="wrap_content"
@@ -107,11 +83,12 @@
         android:text="Reset"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/stepCountView"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="@+id/stepCountTag"
         app:layout_constraintTop_toBottomOf="@+id/stepCountTag"
+        app:layout_constraintVertical_bias="0.695"
         tools:ignore="HardcodedText"
         />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
