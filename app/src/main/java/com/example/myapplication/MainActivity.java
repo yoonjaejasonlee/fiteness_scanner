@@ -29,20 +29,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     TextView stepCountView;
     Button resetButton;
 
-    // Variables for humidity sensor.
-    Sensor humiditySensor;
-    TextView humidityView;
+    TextView DistanceView;
 
-    // Variables for temperature sensor.
-    Sensor temperatureSensor;
-    TextView temperatureView;
 
     int currentSteps = 0; // Initial step count.
-    int humidity = 0; // Initial humidity measurement.
-    int temperature = 0; // Initial temperature measurement.
-
-    boolean isHumiditySensorAvailable;
-    boolean isTemperatureSensorAvailale;
+    double currentDistance = 0.0;
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
@@ -53,21 +44,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         // Pedometer.
         stepCountView = findViewById(R.id.stepCountView);
         resetButton = findViewById(R.id.resetButton);
+        DistanceView = findViewById(R.id.DistanceView);
 
-        // Humidity.
-        humidityView = findViewById(R.id.humidityView);
-
-        // Temperature
-        temperatureView = findViewById(R.id.temperatureView);
 
         // checking permission
         if(ContextCompat.checkSelfPermission(this,Manifest.permission.ACTIVITY_RECOGNITION) == PackageManager.PERMISSION_DENIED){
             requestPermissions(new String[] {Manifest.permission.ACTIVITY_RECOGNITION},0);
         }
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-        }
 
         // TYPE_STEP_DETECTOR : it resets to 0 once the app closes
         // TYPE_STEP_COUNTER : keeps track even if the app closes, it does not reset.
@@ -81,20 +65,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }else{
             stepCountSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
         }
-        if (sensorManager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY) == null){
-            Toast.makeText(this, "No Humidity Sensor", Toast.LENGTH_SHORT).show();
-            isHumiditySensorAvailable = false;
-        }else{
-            humiditySensor = sensorManager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY);
-            isHumiditySensorAvailable = true;
-        }
-        if (sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE) == null){
-            Toast.makeText(this, "No Temperature Sensor", Toast.LENGTH_SHORT).show();
-            isTemperatureSensorAvailale = false;
-        }else{
-            temperatureSensor = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
-            isTemperatureSensorAvailale = true;
-        }
 
         resetButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -102,14 +72,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 // Pedometer.
                 currentSteps = 0;
                 stepCountView.setText(String.valueOf(currentSteps));
-
-//                // Humidity.
-//                humidity = 0;
-//                humidityView.setText(String.valueOf(humidity));
-
-                // Temperature
-//                temperature = 0;
-//                temperatureView.setText(String.valueOf(temperature));
 
             }
         });
@@ -120,12 +82,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if(stepCountSensor != null){
             sensorManager.registerListener(this,stepCountSensor,SensorManager.SENSOR_DELAY_FASTEST);
         }
-//        if (humiditySensor != null){
-//            sensorManager.registerListener(this,humiditySensor,SensorManager.SENSOR_DELAY_FASTEST);
-//        }
-//        if (temperatureSensor != null){
-//            sensorManager.registerListener(this,temperatureSensor,SensorManager.SENSOR_DELAY_FASTEST);
-//        }
     }
 
     @Override
@@ -135,16 +91,18 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 currentSteps++;
                 stepCountView.setText(String.valueOf(currentSteps));
             }
+            // Calculate the distance using the calculateDistance method
+            double distance = calculateDistance(currentSteps);
 
-            if(event.sensor.getType()==Sensor.TYPE_RELATIVE_HUMIDITY){
-                humidityView.setText("Relative Humidity: " + event.values[0] + "%");
-            }
-
-            if(event.sensor.getType()==Sensor.TYPE_AMBIENT_TEMPERATURE){
-                temperatureView.setText("Temperature: " + event.values[0] + " degrees");
-            }
+            // Update the TextView text with the calculated distance
+            DistanceView.setText(String.format("%.2f", distance) + " miles");
         }
     }
+
+    public static double calculateDistance(int stepCount) {
+        return (stepCount * 2.5) / 5280;
+    }
+
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy){
 
@@ -153,24 +111,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onResume(){
         super.onResume();
-        if (isHumiditySensorAvailable){
-            sensorManager.registerListener(this, humiditySensor, SensorManager.SENSOR_DELAY_NORMAL);
-        }
-
-        if(isTemperatureSensorAvailale){
-            sensorManager.registerListener(this,temperatureSensor,SensorManager.SENSOR_DELAY_NORMAL);
-        }
     }
+
 
     @Override
     protected void onPause() {
         super.onPause();
-        if(isHumiditySensorAvailable){
-            sensorManager.unregisterListener(this);
-        }
-
-        if(isTemperatureSensorAvailale){
-            sensorManager.unregisterListener(this);
-        }
     }
 }
