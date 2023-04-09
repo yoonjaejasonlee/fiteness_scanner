@@ -2,11 +2,15 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
 import android.Manifest;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -33,9 +37,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     Sensor humiditySensor;
     TextView humidityView;
 
+<<<<<<< Updated upstream
     // Variables for temperature sensor.
     Sensor temperatureSensor;
     TextView temperatureView;
+=======
+    // Variables used for creating notifications.
+    String textTitle;
+    String textContent;
+    String largeTextContent;
+>>>>>>> Stashed changes
 
     int currentSteps = 0; // Initial step count.
     int humidity = 0; // Initial humidity measurement.
@@ -135,6 +146,58 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         }
     }
+<<<<<<< Updated upstream
+=======
+
+    // NOTIFICATION HANDLING CODE: Not yet functional. If you need to test something without this code, feel free to comment it out quick.
+    // /* --------------------------
+
+    // Creates a channel for notifications.
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES .0) { // Ensures notif. channel is only created on API Ver. 26+. Using notification channels below this ver. causes an error.
+            CharSequence name = getString(R.string.channel_name);
+            String description = getSring(R.string.channel_description);
+            int priority = NotificationManager.IMPORTANCE_DEFAULT;
+
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, priority);
+            channel.setDescription(description);
+
+            // Register the channel with the system.
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    // Sets the notification's 'tap action'/intent, or what occurs when the notification is tapped.
+    Intent intent = new Intent(this, AlertDetails.class);
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+    // Sets the content and channel of a notification.
+    NotificationManagerCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+        //.setSmallIcon(R.drawable.notification_icon) // Code for a potential icon for the notification.
+        .setContentTitle(textTitle) // Title of the Notification.
+        .setContentText(textContent) // Content of the Notification. Short version that spans one line.
+        .setStyle(new NotificationCompat.BigTextStyle() // Notifications that span more than a single line.
+            .bigText(largeTextContent)
+        )
+
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT); // How 'intrusive' the notification is. Default value.
+        .setContentIntent(pendingIntent); // Fires the notification's 'tap action'. See the respective code block above for further details.
+        .setAutoCancel(true); // Automatically dismisses notification after a bit.
+
+    // Shows the notification to the user.
+    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+    notificationManager.notify(notificationId, builder.build());
+
+    // End of notification code.
+    // ------------------------------------- */
+
+    public static double calculateDistance(int stepCount) {
+        return (stepCount * 2.5) / 5280;
+    }
+
+>>>>>>> Stashed changes
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy){
 
