@@ -11,28 +11,67 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="5dp"
         android:layout_marginBottom="30dp"
-        android:text="Optimal Fitness Scanner"
-        android:textSize="30sp"
+        android:text="Jogging Advice Pedometer"
+        android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/stepCountTag"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.216"
         tools:ignore="HardcodedText"
+        />
+
+    <TextView
+        android:id="@+id/stepGoalTag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="72dp"
+        android:text="Goal:"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toStartOf="@+id/stepGoalView"
+        app:layout_constraintHorizontal_bias="0.462"
+        app:layout_constraintStart_toStartOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/title"
+        tools:ignore="HardcodedText"
+        />
+
+    <EditText
+        android:id="@+id/stepGoalView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="@+id/stepGoalTag"
+        app:layout_constraintEnd_toEndOf="@+id/title"
+        app:layout_constraintStart_toEndOf="@+id/stepGoalTag"
+        app:layout_constraintTop_toTopOf="@+id/stepGoalTag"
+        />
+
+    <Button
+        android:id="@+id/btn01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintBottom_toBottomOf="@+id/stepGoalTag"
+        app:layout_constraintEnd_toStartOf="@id/stepGoalTag"
+        app:layout_constraintStart_toStartOf="@id/stepCountView"
+        app:layout_constraintBottom_toTopOf="@id/stepCountView"
+        tools:layout_editor_absoluteY="295dp"
         />
 
     <TextView
         android:id="@+id/stepCountTag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="60dp"
         android:text="Steps:"
         android:textSize="25sp"
         app:layout_constraintEnd_toStartOf="@+id/stepCountView"
         app:layout_constraintStart_toStartOf="@+id/title"
-        app:layout_constraintTop_toBottomOf="@+id/title"
+        app:layout_constraintTop_toBottomOf="@+id/stepGoalTag"
         tools:ignore="HardcodedText"
         />
 
@@ -53,7 +92,7 @@
         android:id="@+id/DistanceTag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="60dp"
         android:text="Distance:"
         android:textSize="25sp"
         app:layout_constraintEnd_toStartOf="@+id/stepCountView"
@@ -83,12 +122,13 @@
         android:text="Reset"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/stepCountView"
-        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintHorizontal_bias="0.414"
         app:layout_constraintStart_toStartOf="@+id/stepCountTag"
         app:layout_constraintTop_toBottomOf="@+id/stepCountTag"
-        app:layout_constraintVertical_bias="0.695"
+        app:layout_constraintVertical_bias="0.492"
         tools:ignore="HardcodedText"
         />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
