@@ -2,10 +2,13 @@ package com.example.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
 import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     int currentSteps = 0; // Initial step count.
     double currentDistance = 0.0;
+    boolean notificationSent = false;
     String goal;
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -51,11 +55,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
         editor = pref.edit();
 
-        myInt = pref.getInt("myInt", 0);
+        myInt = pref.getInt("myInt", 10000);
+        editor.putInt("MyInt", myInt);
+        editor.commit();
         stepGoalView = findViewById(R.id.stepGoalView);
         btn01 = findViewById(R.id.btn01);
 
         stepGoalView.setText(String.valueOf(myInt));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("CHANNEL_ID", "CHANNEL_NAME", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
 
         btn01.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 editor.putInt("MyInt", myInt);
                 editor.commit();
                 goal = stepGoalView.getText().toString();
+                stepGoalView.clearFocus();
             }
         });
 
@@ -83,9 +97,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         // TYPE_STEP_COUNTER : keeps track even if the app closes, it does not reset.
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
-
-        // TYPE_AMBIENT_TEMPERATURE: constantly updates temperature.
-        // TYPE_RELATIVE_HUMIDITY: constantly updates relative humidity levels.
         if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) == null){
             Toast.makeText(this, "No Step Sensor", Toast.LENGTH_SHORT).show();
         }else{
@@ -101,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 stepGoalView.setText("0");
                 stepCountView.setText(String.valueOf(currentSteps));
                 DistanceView.setText(String.valueOf(currentDistance));
+                notificationSent = false;
 
             }
         });
@@ -115,10 +127,23 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onSensorChanged(SensorEvent event){
-        if(event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR){
-            if(event.values[0] == 1.0f) {
+        if(event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
+            if (event.values[0] == 1.0f) {
                 currentSteps++;
-                stepCountView.setText(currentSteps + " (" +getPercentage(goal,currentSteps)+"%"+")");
+                stepCountView.setText(currentSteps + " (" + getPercentage(goal, currentSteps) + "%" + ")");
+
+                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                // Create a notification builder
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "CHANNEL_ID")
+                        .setSmallIcon(R.drawable.notification_icon)
+                        .setContentTitle("Step Goal Progress")
+                        .setPriority(NotificationCompat.PRIORITY_HIGH);
+                if(getPercentage(goal, currentSteps) >= 100 && !notificationSent){
+                    builder.setContentText("Congrats! You have completed your step goal!");
+                    notificationManager.notify(1, builder.build());
+                    notificationSent = true;
+                }
+
             }
             // Calculate the distance using the calculateDistance method
             currentDistance = calculateDistance(currentSteps);
@@ -126,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             // Update the TextView text with the calculated distance
             DistanceView.setText(String.format("%.2f", currentDistance) + " mi");
         }
+
     }
 
     public static double calculateDistance(int stepCount) {
