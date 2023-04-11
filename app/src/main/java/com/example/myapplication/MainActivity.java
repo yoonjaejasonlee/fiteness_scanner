@@ -71,7 +71,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             public void onClick(View v){
                 // Pedometer.
                 currentSteps = 0;
+                currentDistance = 0;
                 stepCountView.setText(String.valueOf(currentSteps));
+                DistanceView.setText(String.valueOf(currentDistance));
 
             }
         });
@@ -92,10 +94,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 stepCountView.setText(String.valueOf(currentSteps));
             }
             // Calculate the distance using the calculateDistance method
-            double distance = calculateDistance(currentSteps);
+            currentDistance = calculateDistance(currentSteps);
 
             // Update the TextView text with the calculated distance
-            DistanceView.setText(String.format("%.2f", distance) + " miles");
+            DistanceView.setText(String.format("%.2f", currentDistance) + " mi");
         }
     }
 
