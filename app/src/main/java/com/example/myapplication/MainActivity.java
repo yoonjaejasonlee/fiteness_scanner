@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     int currentSteps = 0; // Initial step count.
     double currentDistance = 0.0;
     boolean notificationSent = false;
+    boolean notificationMidPoint = false;
     String goal;
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
@@ -142,6 +143,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     builder.setContentText("Congrats! You have completed your step goal!");
                     notificationManager.notify(1, builder.build());
                     notificationSent = true;
+                }
+
+                if(getPercentage(goal,currentSteps) > 50 && !notificationMidPoint){
+                    builder.setContentText("You completed more than 50% of your goal!");
+                    notificationManager.notify(1, builder.build());
+                    notificationMidPoint = true;
                 }
 
             }
